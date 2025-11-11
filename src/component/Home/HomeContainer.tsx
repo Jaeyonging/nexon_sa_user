@@ -9,8 +9,6 @@ import RecentStat from "../stat/RecentStat";
 const HomeContainer = () => {
     const { basicInfo, rank, tier, recentInfo } = useSA_UserInfoStore();
 
-    console.log(basicInfo, rank, tier, recentInfo);
-
     const isInitial = !basicInfo && !rank && !tier && !recentInfo;
     if (isInitial) return <EmptyState />;
 
