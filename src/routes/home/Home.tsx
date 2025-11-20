@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { SAUserProvider } from "../../api/fetchHooks";
+import { SAMatchProvider, SAUserProvider } from "../../api/fetchHooks";
 import ApiErrorBoundary from "../../component/ApiErrorBoundary";
 import HomeContainer from "../../component/Home/HomeContainer";
 import SearchUser from "../../component/Home/SearchUser";
+import MatchContainer from "../../component/Home/MatchContainer";
+import MatchTags from "../../component/match/MatchTags";
 
 export const Home = () => {
   const [nickname, setNickname] = useState("");
-
+  const [selectedMatchMode, setSelectedMatchMode] = useState("폭파미션");
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-slate-50 to-slate-100">
@@ -29,6 +31,17 @@ export const Home = () => {
             </SAUserProvider>
           </ApiErrorBoundary>
         </main>
+
+        {/*Match Section */}
+        <main className="mt-10 bg-white p-4 rounded-2xl">
+          <MatchTags matchModes={["개인전", "데스매치", "폭파미션", "진짜를 모아라"]} selectedMatchMode={selectedMatchMode} setSelectedMatchMode={setSelectedMatchMode} />
+          <ApiErrorBoundary>
+            <SAMatchProvider matchMode={selectedMatchMode}>
+              <MatchContainer />
+            </SAMatchProvider>
+          </ApiErrorBoundary>
+        </main>
+
       </div>
     </div>
   );

@@ -53,3 +53,31 @@ const tierToImage : [string, string][] = [
     ["Ranker", "117"],
     ["High Ranker", "118"],
 ];
+
+export const getSeasonGradeImage = (seasonGrade?: string) => {
+    if (!seasonGrade) return null;
+    const found = seasonGradeToImage.find(([name]) => name === seasonGrade);
+    if (!found) return null;
+    const [, code] = found;
+    return `https://img.sa.nexon.com/barracks/assets/images/emblem/clan/2022/solo/${code}.png`;
+};
+
+const seasonGradeToImage : [string, string][] = [
+    ["UNRANK", "100"],
+    ["BRONZE I", "101"],
+    ["BRONZE II", "102"],
+    ["BRONZE III", "103"],
+    ["SILVER I", "104"],
+    ["SILVER II", "105"],
+    ["SILVER III", "106"],
+];
+
+
+export const matchDateFromToday = (date?: string) => {
+    if (!date) return "-";
+    const today = new Date();
+    const matchDate = new Date(date);
+    const diffTime = Math.abs(today.getTime() - matchDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays}일 전`;
+}

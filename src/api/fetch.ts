@@ -60,3 +60,32 @@ export const fetchSA_UserRecentInfo = async (ouid: string) => {
     });
     return response.data;
 }
+
+
+/// match data fetch
+
+
+export const fetchSA_AllMatchInfo = async (ouid: string, matchMode: string) => {
+    const response = await axios.get(`${NEXON_API}/suddenattack/v1/match`, {
+        headers: {
+            'x-nxopen-api-key': `${NEXON_API_KEY}`
+        },
+        params: {
+            ouid: ouid,
+            match_mode: matchMode
+        }
+    });
+    return response.data;
+}
+
+export const fetchSA_MatchInfoDetail = async (matchId: string) => {
+    const response = await axios.get(`${NEXON_API}/suddenattack/v1/match-detail`, {
+        headers: {
+            'x-nxopen-api-key': `${NEXON_API_KEY}`
+        },
+        params: {
+            match_id: matchId
+        }
+    });
+    return response.data;
+}

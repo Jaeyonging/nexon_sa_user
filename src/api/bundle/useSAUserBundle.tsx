@@ -1,4 +1,3 @@
-// hooks/useSAUserBundle.ts
 import { useEffect, useMemo } from "react";
 import { useQuery, useQueries, UseQueryResult } from "react-query";
 import { fetchSA_UserBasicInfo, fetchSA_UserId, fetchSA_UserRank, fetchSA_UserRecentInfo, fetchSA_UserTier } from "../fetch";
@@ -31,7 +30,6 @@ export function useSAUserBundle(nickname: string, opts?: { enabled?: boolean }):
     const ouid = userIdQ.data?.ouid as string | undefined;
 
     const { setOuid } = useSA_UserIDStore();
-    const { setBasicInfo, setRank, setTier, setRecentInfo } = useSA_UserInfoStore();
 
     useEffect(() => {
         if (ouid) setOuid(ouid);
@@ -42,21 +40,25 @@ export function useSAUserBundle(nickname: string, opts?: { enabled?: boolean }):
             queryKey: ["SA_UserBasicInfo", ouid],
             queryFn: () => fetchSA_UserBasicInfo(ouid as string),
             enabled: !!ouid,
+            retry: 3,
         },
         {
             queryKey: ["SA_UserRank", ouid],
             queryFn: () => fetchSA_UserRank(ouid as string),
             enabled: !!ouid,
+            retry: 3,
         },
         {
             queryKey: ["SA_UserTier", ouid],
             queryFn: () => fetchSA_UserTier(ouid as string),
             enabled: !!ouid,
+            retry: 3,
         },
         {
             queryKey: ["SA_UserRecentInfo", ouid],
             queryFn: () => fetchSA_UserRecentInfo(ouid as string),
             enabled: !!ouid,
+            retry: 3,
         },
     ]) as [
             UseQueryResult<any>,
@@ -66,22 +68,6 @@ export function useSAUserBundle(nickname: string, opts?: { enabled?: boolean }):
         ];
 
     const [basicQ, rankQ, tierQ, recentQ] = queries;
-
-    useEffect(() => {
-        if (basicQ.data) setBasicInfo(basicQ.data);
-    }, [basicQ.data, setBasicInfo]);
-
-    useEffect(() => {
-        if (rankQ.data) setRank(rankQ.data);
-    }, [rankQ.data, setRank]);
-
-    useEffect(() => {
-        if (tierQ.data) setTier(tierQ.data);
-    }, [tierQ.data, setTier]);
-
-    useEffect(() => {
-        if (recentQ.data) setRecentInfo(recentQ.data);
-    }, [recentQ.data, setRecentInfo]);
 
     const isLoading = userIdQ.isLoading || (!!ouid && queries.some(q => q.isLoading));
     const isError = userIdQ.isError || queries.some(q => q.isError);
