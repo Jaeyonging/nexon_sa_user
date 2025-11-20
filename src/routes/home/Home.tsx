@@ -32,7 +32,7 @@ export const Home = () => {
           </ApiErrorBoundary>
         </main>
 
-        {/*Match Section */}
+        {/* Match Section
         <main className="mt-10 bg-white p-4 rounded-2xl">
           <MatchTags matchModes={["개인전", "데스매치", "폭파미션", "진짜를 모아라"]} selectedMatchMode={selectedMatchMode} setSelectedMatchMode={setSelectedMatchMode} />
           <ApiErrorBoundary>
@@ -40,7 +40,7 @@ export const Home = () => {
               <MatchContainer />
             </SAMatchProvider>
           </ApiErrorBoundary>
-        </main>
+        </main> */}
 
       </div>
     </div>
