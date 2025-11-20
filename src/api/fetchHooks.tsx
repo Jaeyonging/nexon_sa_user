@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import Loading from '../lotties/Loading';
 import { useSAUserBundle } from './bundle/useSAUserBundle';
-import { fetchSA_AllMatchInfo, fetchSA_MatchInfoDetail } from './fetch';
 import { useQuery } from 'react-query';
 import { useSA_MatchIDStore, useSA_MatchInfoStore, useSA_UserIDStore, useSA_UserInfoStore } from '../store/data';
 import EmptyState from '../component/Home/EmptyState';
+import { fetchSA_AllMatchInfo } from './fetch';
 
 export const SAUserProvider = ({ children, nickname }: { children: React.ReactNode, nickname: string }) => {
     const { setBasicInfo, setRank, setTier, setRecentInfo } = useSA_UserInfoStore();
@@ -26,28 +26,21 @@ export const SAUserProvider = ({ children, nickname }: { children: React.ReactNo
             setRecentInfo(results.recent);
         }
 
-    }, [results, setBasicInfo, setRank, setTier, setRecentInfo])
+    }, [results])
 
     if (isLoading) return <Loading />;
     if (isError) throw error;
 
-    return <>{children}</>
+    return <>{results && children}</>
 }
 
 export const SAMatchProvider = ({ children, matchMode }: { children: React.ReactNode, matchMode: string }) => {
     const { ouid } = useSA_UserIDStore();
     const { setAllmatchInfo, resetVisibleCount } = useSA_MatchInfoStore();
 
-    const { data, isLoading, isError, error } = useQuery(
-        ["SA_AllMatchInfo", ouid, matchMode],
-        () => fetchSA_AllMatchInfo(ouid, matchMode),
-        {
-            enabled: !!ouid && !!matchMode,
-            retry: 3,
-        });
+    const { data, isLoading, isError, error } = useQuery(["SA_AllMatchInfo", ouid, matchMode], () => fetchSA_AllMatchInfo(ouid, matchMode), { enabled: !!ouid, retry: 3 });
 
     useEffect(() => {
-        
         if (data) {
             setAllmatchInfo(data.match);
             resetVisibleCount();
@@ -60,5 +53,6 @@ export const SAMatchProvider = ({ children, matchMode }: { children: React.React
     if (isLoading) return <Loading />;
     if (isError) throw error;
 
-    return <>{children}</>
+
+    return <>{data && children}</>
 }
