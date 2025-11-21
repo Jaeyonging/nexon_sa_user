@@ -42,7 +42,7 @@ const TierCard = ({ tier, hasTier }: Props) => {
                                 <img
                                     src={getTierImage(tier?.party_rank_match_tier)!}
                                     alt={tier?.party_rank_match_tier}
-                                    className="w-full h-full object-contain"
+                                    className="object-contain"
                                 />
                             ) : (
                                 <div className="w-full h-full bg-slate-100 rounded-xl" />

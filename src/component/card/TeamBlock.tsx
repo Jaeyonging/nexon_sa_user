@@ -1,4 +1,5 @@
 import React from 'react'
+import { getSeasonGradeImage } from '../../util/type';
 
 interface Props {
     title: string;
@@ -41,7 +42,7 @@ const TeamBlock = ({ title, result, players }: Props) => {
                                 className="border-b border-slate-300 hover:bg-slate-100 transition"
                             >
                                 <td className="p-2 font-semibold">{player.user_name}</td>
-                                <td className="p-2 text-slate-500">{player.season_grade}</td>
+                                <td className="p-2 text-slate-500"><img src={getSeasonGradeImage(player.season_grade) ?? "-"} alt={player.season_grade ?? "-"} className="object-contain w-8 h-8 inline-block" /> {player.season_grade}</td>
                                 <td className="p-2 font-semibold text-slate-800">{player.kill}</td>
                                 <td className="p-2 text-red-600 font-semibold">{player.death}</td>
                                 <td className="p-2 text-green-600 font-semibold">{player.assist}</td>

@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import Loading from '../lotties/Loading';
 import { useSAUserBundle } from './bundle/useSAUserBundle';
 import { useQuery } from 'react-query';
-import { useSA_MatchIDStore, useSA_MatchInfoStore, useSA_UserIDStore, useSA_UserInfoStore } from '../store/data';
-import EmptyState from '../component/Home/EmptyState';
+import { useSA_MatchInfoStore, useSA_UserIDStore, useSA_UserInfoStore } from '../store/data';
 import { fetchSA_AllMatchInfo } from './fetch';
 
 export const SAUserProvider = ({ children, nickname }: { children: React.ReactNode, nickname: string }) => {
