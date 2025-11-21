@@ -50,8 +50,8 @@ const tierToImage : [string, string][] = [
     ["GRANDMASTER II", "114"],
     ["GRANDMASTER III", "115"],
     ["LEGEND", "116"],
-    ["Ranker", "117"],
-    ["High Ranker", "118"],
+    ["RANKER", "117"],
+    ["HIGH RANKER", "118"],
 ];
 
 export const getSeasonGradeImage = (seasonGrade?: string) => {
