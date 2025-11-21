@@ -1,5 +1,6 @@
 import React from 'react'
 import { getSeasonGradeImage } from '../../util/type';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Props {
     title: string;
@@ -7,7 +8,13 @@ interface Props {
     players: any[];
 }
 const TeamBlock = ({ title, result, players }: Props) => {
+    const { nickname } = useParams<{ nickname: string | undefined }>();
     const isWin = result === "승리";
+    const navigate = useNavigate();
+    const handleNicknameClick = (new_nickname: string) => {
+        if (nickname === new_nickname) return;
+        navigate(`/search/${encodeURIComponent(new_nickname)}`);
+    };
 
     return (
         <div className="flex flex-col gap-2">
@@ -39,9 +46,9 @@ const TeamBlock = ({ title, result, players }: Props) => {
                         {players.map((player: any, idx: number) => (
                             <tr
                                 key={idx}
-                                className="border-b border-slate-300 hover:bg-slate-100 transition"
+                                className={`border-b border-slate-300 hover:bg-slate-100 transition ${nickname === player.user_name ? "bg-slate-200" : ""}`}
                             >
-                                <td className="p-2 font-semibold">{player.user_name}</td>
+                                <td className="p-2 font-semibold cursor-pointer hover:text-blue-600" onClick={() => handleNicknameClick(player.user_name)}>{player.user_name}</td>
                                 <td className="p-2 text-slate-500"><img src={getSeasonGradeImage(player.season_grade) ?? "-"} alt={player.season_grade ?? "-"} className="object-contain w-8 h-8 inline-block" /> {player.season_grade}</td>
                                 <td className="p-2 font-semibold text-slate-800">{player.kill}</td>
                                 <td className="p-2 text-red-600 font-semibold">{player.death}</td>
