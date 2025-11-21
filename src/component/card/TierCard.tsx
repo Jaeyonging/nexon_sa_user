@@ -12,10 +12,10 @@ const TierCard = ({ tier, hasTier }: Props) => {
     return (
         <SA_Card title="티어" className="lg:col-span-1">
             {hasTier ? (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6">
                     {/* 솔로 티어 */}
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200 p-4">
-                        <div className="w-16 h-16 mb-2">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-white/20 bg-white/5 p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mb-3">
                             {getTierImage(tier?.solo_rank_match_tier) ? (
                                 <img
                                     src={getTierImage(tier?.solo_rank_match_tier)!}
@@ -23,36 +23,36 @@ const TierCard = ({ tier, hasTier }: Props) => {
                                     className="w-full h-full object-contain"
                                 />
                             ) : (
-                                <div className="w-full h-full bg-slate-100 rounded-xl" />
+                                <div className="w-full h-full bg-white/10 rounded-xl" />
                             )}
                         </div>
-                        <div className="text-sm text-slate-600">솔로 티어</div>
-                        <div className="text-lg font-semibold text-slate-900">
+                        <div className="text-xs sm:text-sm text-slate-300 mb-1 font-medium">솔로 티어</div>
+                        <div className="text-base sm:text-lg font-bold text-white">
                             {tier?.solo_rank_match_tier ?? "-"}
                         </div>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-slate-400 mt-1">
                             {tier?.solo_rank_match_score ?? 0} 점
                         </div>
                     </div>
 
                     {/* 파티 티어 */}
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200 p-4">
-                        <div className="w-16 h-16 mb-2">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-white/20 bg-white/5 p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mb-3">
                             {getTierImage(tier?.party_rank_match_tier) ? (
                                 <img
                                     src={getTierImage(tier?.party_rank_match_tier)!}
                                     alt={tier?.party_rank_match_tier}
-                                    className="object-contain"
+                                    className="w-full h-full object-contain"
                                 />
                             ) : (
-                                <div className="w-full h-full bg-slate-100 rounded-xl" />
+                                <div className="w-full h-full bg-white/10 rounded-xl" />
                             )}
                         </div>
-                        <div className="text-sm text-slate-600">파티 티어</div>
-                        <div className="text-lg font-semibold text-slate-900">
+                        <div className="text-xs sm:text-sm text-slate-300 mb-1 font-medium">파티 티어</div>
+                        <div className="text-base sm:text-lg font-bold text-white">
                             {tier?.party_rank_match_tier ?? "-"}
                         </div>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-slate-400 mt-1">
                             {tier?.party_rank_match_score ?? 0} 점
                         </div>
                     </div>

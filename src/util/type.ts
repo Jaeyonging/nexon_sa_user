@@ -12,15 +12,15 @@ export const badgeByManner = (m?: string) => {
     switch (m) {
         case "매우 좋음":
         case "아주 좋음":
-            return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
+            return "bg-emerald-500/30 text-emerald-100 border border-emerald-400/50";
         case "좋음":
-            return "bg-green-50 text-green-700 ring-1 ring-green-200";
+            return "bg-green-500/30 text-green-100 border border-green-400/50";
         case "보통":
-            return "bg-slate-50 text-slate-700 ring-1 ring-slate-200";
+            return "bg-slate-500/30 text-slate-200 border border-slate-400/50";
         case "나쁨":
-            return "bg-rose-50 text-rose-700 ring-1 ring-rose-200";
+            return "bg-rose-500/30 text-rose-100 border border-rose-400/50";
         default:
-            return "bg-slate-50 text-slate-600 ring-1 ring-slate-200";
+            return "bg-slate-500/30 text-slate-300 border border-slate-400/50";
     }
 };
 
