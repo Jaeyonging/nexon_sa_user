@@ -48,7 +48,7 @@ export const SAMatchProvider = ({ children, matchMode }: { children: React.React
         return () => {
             setAllmatchInfo(null);
         }
-    }, [data]);
+    }, [data, ouid]);
 
     if (isLoading) return <Loading />;
     if (isError) throw error;
