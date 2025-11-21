@@ -2,7 +2,7 @@ import React from 'react'
 import SA_Card from './SA_Card';
 import Skeleton from '../Skeleton';
 import Stat from '../stat/Stat';
-import { getSeasonGradeImage } from '../../util/type';
+import { getGradeImage, getSeasonGradeImage } from '../../util/type';
 
 interface Props {
     rank: any;
@@ -14,7 +14,7 @@ const RankCard = ({ rank, hasRank }: Props) => {
         <SA_Card title="계급 / 시즌" className="lg:col-span-1">
             {hasRank ? (
                 <div className="grid grid-cols-2 gap-3 items-center justify-center">
-                    <Stat label="현재 계급" value={rank?.grade ?? "-"} />
+                    <Stat label="현재 계급" value={<img src={getGradeImage(rank?.grade) ?? "-"} alt={rank?.grade ?? "-"} className="object-contain w-16 h-16 inline-block" />} />
                     <Stat
                         label="계급 순위"
                         value={
@@ -23,7 +23,7 @@ const RankCard = ({ rank, hasRank }: Props) => {
                                 : "-"
                         }
                     />
-                    <Stat label="시즌 계급" value={<img src={getSeasonGradeImage(rank?.season_grade) ?? "-"} alt={rank?.season_grade ?? "-"}  className="object-contain w-16 h-16 inline-block" />} />
+                    <Stat label="시즌 계급" value={<img src={getSeasonGradeImage(rank?.season_grade) ?? "-"} alt={rank?.season_grade ?? "-"} className="object-contain w-16 h-16 inline-block" />} />
                     <Stat
                         label="시즌 순위"
                         value={
