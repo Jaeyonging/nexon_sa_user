@@ -1,12 +1,10 @@
 import React from 'react'
-import Lottie from 'lottie-react';
-import loadingAnimation from '../lotties/loading.json';
 
 const Loading = () => {
   return (
-    <div className="flex justify-center items-center w-[100%] h-[100%]">
-      <Lottie animationData={loadingAnimation} loop={true} style={{ width: '10%', height: '10%' }} />
-      <span className="text-[20px] font-bold">Loading...</span>
+    <div className="flex justify-center items-center py-8 gap-2">
+      <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+      <span className="text-xs text-slate-400">로딩 중...</span>
     </div>
   )
 }

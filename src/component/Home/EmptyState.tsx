@@ -1,9 +1,11 @@
 import React from 'react'
 
 const EmptyState = () => (
-    <div className="mt-8 flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-white/20 bg-white/5 backdrop-blur-xl p-10 sm:p-12 text-center">
-        <div className="text-xl sm:text-2xl font-bold text-white">검색 대기 중</div>
-        <p className="text-sm sm:text-base text-slate-300">닉네임을 입력하고 검색을 눌러주세요.</p>
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+        <svg className="w-12 h-12 text-slate-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <div className="text-sm text-slate-400">닉네임을 검색해주세요</div>
     </div>
 );
 

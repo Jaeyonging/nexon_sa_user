@@ -12,71 +12,66 @@ const MatchCard = ({ matchInfo }: { matchInfo: any }) => {
     const { data, isLoading, isError } = useQuery(
         ["SA_MatchDetail", matchId],
         () => fetchSA_MatchInfoDetail(matchId),
-        {   enabled: open,
+        {
+            enabled: open,
             staleTime: Infinity,
-         } 
+            retry: 2,
+            retryDelay: 2000,
+        }
     );
 
     const isWin = matchInfo.match_result === '1';
-    
+    const kda = matchInfo.death > 0 ? ((matchInfo.kill + matchInfo.assist) / matchInfo.death).toFixed(2) : 'Perfect';
+
     return (
-        <div className={`relative overflow-hidden rounded-2xl border-2 mb-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
-            ${isWin 
-                ? 'border-green-500/50 bg-gradient-to-br from-green-500/10 to-green-600/5' 
-                : 'border-red-500/50 bg-gradient-to-br from-red-500/10 to-red-600/5'
-            }`}>
-            <div className="p-4 sm:p-6">
-                {/* 헤더 */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                    <div className="flex flex-col gap-1">
-                        <span className="text-white font-bold text-base sm:text-lg">{matchInfo.match_mode}</span>
-                        <span className="text-slate-300 text-sm">{matchInfo.match_type}</span>
+        <div className={`rounded-lg mb-2 overflow-hidden border-l-4 ${isWin ? 'border-l-green-500 bg-green-500/5' : 'border-l-red-500 bg-red-500/5'}`}>
+            {/* 메인 카드 */}
+            <button
+                className="w-full px-3 py-2.5 flex items-center gap-3 text-left hover:bg-white/5 transition-colors"
+                onClick={() => setOpen(!open)}
+            >
+                {/* 결과 */}
+                <div className="w-12 flex-shrink-0">
+                    <div className={`text-xs font-bold ${isWin ? 'text-green-400' : 'text-red-400'}`}>
+                        {isWin ? '승리' : '패배'}
                     </div>
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <span className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${
-                            isWin 
-                                ? 'bg-green-500/30 text-green-100 border border-green-400/50' 
-                                : 'bg-red-500/30 text-red-100 border border-red-400/50'
-                        }`}>
-                            {isWin ? '승리' : '패배'}
-                        </span>
-                        <span className="text-slate-400 text-xs sm:text-sm">{matchDateFromToday(matchInfo.date_match)}</span>
-                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">{matchInfo.match_mode}</div>
                 </div>
 
-                {/* KDA 정보 */}
-                <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4">
-                    <div className="flex flex-col items-center justify-center rounded-xl bg-white/5 border border-white/10 p-3 sm:p-4">
-                        <span className="text-2xl sm:text-3xl font-bold text-white">{matchInfo.kill}</span>
-                        <span className='text-xs sm:text-sm text-slate-300 mt-1'>Kill</span>
+                {/* KDA */}
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-bold text-white">{matchInfo.kill}</span>
+                        <span className="text-slate-600">/</span>
+                        <span className="text-sm font-bold text-red-400">{matchInfo.death}</span>
+                        <span className="text-slate-600">/</span>
+                        <span className="text-sm font-bold text-blue-400">{matchInfo.assist}</span>
                     </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl bg-white/5 border border-white/10 p-3 sm:p-4">
-                        <span className="text-2xl sm:text-3xl font-bold text-red-400">{matchInfo.death}</span>
-                        <span className='text-xs sm:text-sm text-slate-300 mt-1'>Death</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center rounded-xl bg-white/5 border border-white/10 p-3 sm:p-4">
-                        <span className="text-2xl sm:text-3xl font-bold text-green-400">{matchInfo.assist}</span>
-                        <span className='text-xs sm:text-sm text-slate-300 mt-1'>Assist</span>
-                    </div>
+                    <span className="text-[10px] text-slate-500 ml-2 bg-[#2a2a4a] px-1.5 py-0.5 rounded">{kda}</span>
                 </div>
 
-                {/* 상세 정보 버튼 */}
-                <button
-                    className='w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
-                    onClick={() => setOpen(!open)}
-                >
-                    {open ? "닫기" : "매치 상세 정보 보기"}
-                </button>
+                {/* 날짜 & 화살표 */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-[10px] text-slate-500">{matchDateFromToday(matchInfo.date_match)}</span>
+                    <svg
+                        className={`w-4 h-4 text-slate-500 transition-transform ${open ? 'rotate-180' : ''}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </button>
 
-                {/* 상세 정보 */}
-                {open && (
-                    <div className="mt-4 pt-4 border-t border-white/10">
-                        {isLoading && <Loading />}
-                        {isError && <div className="text-sm text-red-400 text-center py-4">에러가 발생했습니다.</div>}
-                        {data && <MatchDetailCard detail={data} />}
-                    </div>
-                )}
-            </div>
+            {/* 상세 정보 */}
+            {open && (
+                <div className="px-3 pb-3 border-t border-[#2a2a4a]">
+                    {isLoading && <Loading />}
+                    {isError && <div className="text-xs text-red-400 text-center py-4">데이터를 불러올 수 없습니다</div>}
+                    {data && <MatchDetailCard detail={data} />}
+                </div>
+            )}
         </div>
     );
 };

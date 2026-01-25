@@ -12,19 +12,10 @@ export const SAUserProvider = ({ children, nickname }: { children: React.ReactNo
     });
 
     useEffect(() => {
-        if (results.basic) {
-            setBasicInfo(results.basic);
-        }
-        if (results.rank) {
-            setRank(results.rank);
-        }
-        if (results.tier) {
-            setTier(results.tier);
-        }
-        if (results.recent) {
-            setRecentInfo(results.recent);
-        }
-
+        if (results.basic) setBasicInfo(results.basic);
+        if (results.rank) setRank(results.rank);
+        if (results.tier) setTier(results.tier);
+        if (results.recent) setRecentInfo(results.recent);
     }, [results])
 
     if (isLoading) return <Loading />;
@@ -33,11 +24,26 @@ export const SAUserProvider = ({ children, nickname }: { children: React.ReactNo
     return <>{results && children}</>
 }
 
-export const SAMatchProvider = ({ children, matchMode }: { children: React.ReactNode, matchMode: string }) => {
+interface SAMatchProviderProps {
+    children: React.ReactNode;
+    matchMode: string;
+    matchType?: string;
+}
+
+export const SAMatchProvider = ({ children, matchMode, matchType }: SAMatchProviderProps) => {
     const { ouid } = useSA_UserIDStore();
     const { setAllmatchInfo, resetVisibleCount } = useSA_MatchInfoStore();
 
-    const { data, isLoading, isError, error } = useQuery(["SA_AllMatchInfo", ouid, matchMode], () => fetchSA_AllMatchInfo(ouid, matchMode), { enabled: !!ouid, retry: 3 });
+    const { data, isLoading, isError, error } = useQuery(
+        ["SA_AllMatchInfo", ouid, matchMode, matchType],
+        () => fetchSA_AllMatchInfo(ouid, matchMode, matchType),
+        {
+            enabled: !!ouid,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 3, // 3분 캐싱
+        }
+    );
 
     useEffect(() => {
         if (data) {
@@ -51,7 +57,6 @@ export const SAMatchProvider = ({ children, matchMode }: { children: React.React
 
     if (isLoading) return <Loading />;
     if (isError) throw error;
-
 
     return <>{data && children}</>
 }

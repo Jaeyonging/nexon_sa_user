@@ -1,5 +1,4 @@
 import React from 'react'
-import SA_Card from '../card/SA_Card'
 import { badgeByManner, fmtDate } from '../../util/type';
 
 interface Props{
@@ -9,55 +8,46 @@ interface Props{
 
 const Profile = ({ basicInfo, hasBasic }: Props) => {
     return (
-        <SA_Card className="mb-6 sm:mb-8">
-            <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-6">
-                {/* Avatar */}
-                <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur opacity-50 group-hover:opacity-70 transition duration-300"></div>
-                    <div className="relative grid h-20 w-20 sm:h-24 sm:w-24 place-items-center rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-2xl sm:text-3xl font-bold text-white shadow-xl">
-                        {(hasBasic && (basicInfo?.user_name?.[0] ?? "?")) || "?"}
-                    </div>
-                </div>
-
-                {/* Info */}
-                {hasBasic ? (
-                    <div className="flex-1 w-full">
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                                {basicInfo?.user_name}
-                            </h2>
-                            {basicInfo?.title_name && (
-                                <span className="rounded-full bg-blue-500/30 backdrop-blur-sm border border-blue-400/50 px-3 py-1.5 text-xs sm:text-sm font-medium text-blue-100">
-                                    {basicInfo.title_name}
-                                </span>
-                            )}
-                            {basicInfo?.clan_name && (
-                                <span className="rounded-full bg-purple-500/30 backdrop-blur-sm border border-purple-400/50 px-3 py-1.5 text-xs sm:text-sm font-medium text-purple-100">
-                                    {basicInfo.clan_name}
-                                </span>
-                            )}
-                            {basicInfo?.manner_grade && (
-                                <span
-                                    className={`rounded-full px-3 py-1.5 text-xs sm:text-sm font-medium backdrop-blur-sm border ${badgeByManner(
-                                        basicInfo.manner_grade
-                                    )}`}
-                                >
-                                    매너 {basicInfo.manner_grade}
-                                </span>
-                            )}
-                        </div>
-                        <p className="text-sm sm:text-base text-slate-300">
-                            가입일: {fmtDate(basicInfo?.user_date_create)}
-                        </p>
-                    </div>
-                ) : (
-                    <div className="flex-1 w-full">
-                        <div className="mb-2 h-6 sm:h-8 w-32 sm:w-48 animate-pulse rounded-xl bg-white/10" />
-                        <div className="h-4 sm:h-5 w-48 sm:w-64 animate-pulse rounded-xl bg-white/10" />
-                    </div>
-                )}
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-[#1e1e38] border border-[#2a2a4a]">
+            {/* Avatar */}
+            <div className="grid h-14 w-14 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-xl font-bold text-white flex-shrink-0 shadow-lg shadow-orange-500/20">
+                {(hasBasic && (basicInfo?.user_name?.[0] ?? "?")) || "?"}
             </div>
-        </SA_Card>
+
+            {/* Info */}
+            {hasBasic ? (
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <h2 className="text-lg font-bold text-white truncate">
+                            {basicInfo?.user_name}
+                        </h2>
+                        {basicInfo?.manner_grade && (
+                            <span className={`px-2 py-0.5 text-[10px] font-semibold rounded ${badgeByManner(basicInfo.manner_grade)}`}>
+                                {basicInfo.manner_grade}
+                            </span>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap text-xs">
+                        {basicInfo?.title_name && (
+                            <span className="text-orange-400">{basicInfo.title_name}</span>
+                        )}
+                        {basicInfo?.clan_name && (
+                            <span className="text-slate-400">
+                                <span className="text-slate-600">|</span> {basicInfo.clan_name}
+                            </span>
+                        )}
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1">
+                        가입일 {fmtDate(basicInfo?.user_date_create)}
+                    </p>
+                </div>
+            ) : (
+                <div className="flex-1">
+                    <div className="h-5 w-32 animate-pulse rounded bg-[#2a2a4a] mb-2" />
+                    <div className="h-3 w-24 animate-pulse rounded bg-[#2a2a4a]" />
+                </div>
+            )}
+        </div>
     )
 }
 

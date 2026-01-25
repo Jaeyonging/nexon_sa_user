@@ -18,10 +18,9 @@ const HomeContainer = () => {
     const hasRecent = Boolean(recentInfo);
 
     return (
-        <div className="mt-8 sm:mt-10">
+        <div className="space-y-2">
             <Profile basicInfo={basicInfo} hasBasic={hasBasic} />
-
-            <div className="grid gap-6 sm:gap-8 lg:grid-cols-3 mt-6 sm:mt-8">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 <RankCard rank={rank} hasRank={hasRank} />
                 <TierCard tier={tier} hasTier={hasTier} />
                 <RecentStat recentInfo={recentInfo} hasRecent={hasRecent} />

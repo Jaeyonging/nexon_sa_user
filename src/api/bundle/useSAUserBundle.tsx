@@ -24,6 +24,9 @@ export function useSAUserBundle(nickname: string, opts?: { enabled?: boolean }):
         () => fetchSA_UserId(nickname),
         {
             enabled,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 5, // 5분 캐싱
         }
     );
 
@@ -40,25 +43,33 @@ export function useSAUserBundle(nickname: string, opts?: { enabled?: boolean }):
             queryKey: ["SA_UserBasicInfo", ouid],
             queryFn: () => fetchSA_UserBasicInfo(ouid as string),
             enabled: !!ouid,
-            retry: 3,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 5,
         },
         {
             queryKey: ["SA_UserRank", ouid],
             queryFn: () => fetchSA_UserRank(ouid as string),
             enabled: !!ouid,
-            retry: 3,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 5,
         },
         {
             queryKey: ["SA_UserTier", ouid],
             queryFn: () => fetchSA_UserTier(ouid as string),
             enabled: !!ouid,
-            retry: 3,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 5,
         },
         {
             queryKey: ["SA_UserRecentInfo", ouid],
             queryFn: () => fetchSA_UserRecentInfo(ouid as string),
             enabled: !!ouid,
-            retry: 3,
+            retry: 2,
+            retryDelay: 2000,
+            staleTime: 1000 * 60 * 5,
         },
     ]) as [
             UseQueryResult<any>,

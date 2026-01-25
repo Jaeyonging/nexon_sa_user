@@ -7,54 +7,90 @@ import MatchTags from '../../component/match/MatchTags';
 import MatchContainer from '../../component/Home/MatchContainer';
 import SearchUser from '../../component/Home/SearchUser';
 
+const MATCH_MODES = ["개인전", "데스매치", "폭파미션", "진짜를 모아라"];
+const MATCH_TYPES = ["전체", "일반전", "클랜전", "퀵매치 클랜전", "클랜 랭크전", "랭크전 솔로", "랭크전 파티", "토너먼트"];
+
 const Search = () => {
     const { nickname } = useParams<{ nickname: string | undefined }>();
     const [selectedMatchMode, setSelectedMatchMode] = useState("폭파미션");
+    const [selectedMatchType, setSelectedMatchType] = useState("전체");
     const navigate = useNavigate();
 
+    const showMatchType = selectedMatchMode === "폭파미션";
+
     return (
-        <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-            <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-24">
-                {/* Top Section */}
-                <header className="flex flex-col items-center gap-6 sm:gap-8 pt-12 sm:pt-16 md:pt-20">
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-                        <img 
-                            src={"../sa.svg"} 
-                            alt="logo" 
-                            className="relative w-[160px] sm:w-[200px] md:w-[240px] cursor-pointer transform transition-transform hover:scale-105" 
-                            onClick={() => navigate("/")} 
+        <div className="min-h-screen w-full bg-[#1a1a2e]">
+            {/* 헤더 */}
+            <header className="sticky top-0 z-50 bg-[#16162a]/95 backdrop-blur border-b border-[#2a2a4a]">
+                <div className="max-w-4xl mx-auto px-4 py-2.5">
+                    <div className="flex items-center gap-3">
+                        <img
+                            src={"../sa.svg"}
+                            alt="logo"
+                            className="w-7 h-7 cursor-pointer hover:opacity-80 transition-opacity"
+                            onClick={() => navigate("/")}
                         />
+                        <div className="flex-1">
+                            <SearchUser />
+                        </div>
                     </div>
-                    <p className="text-slate-300 text-center text-sm sm:text-base md:text-lg max-w-2xl">
-                        닉네임으로 유저 정보를 조회할 수 있어요. 철자에 유의해주세요.
-                    </p>
-                    <SearchUser/>
-                </header>
-            </div>
-            <main className="relative mt-8 sm:mt-10">
-                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-                    <ApiErrorBoundary>
-                        <SAUserProvider nickname={nickname ?? ""}>
-                            <HomeContainer />
-                        </SAUserProvider>
-                    </ApiErrorBoundary>
                 </div>
+            </header>
+
+            {/* 유저 정보 */}
+            <main className="max-w-4xl mx-auto px-4 py-4">
+                <ApiErrorBoundary>
+                    <SAUserProvider nickname={nickname ?? ""}>
+                        <HomeContainer />
+                    </SAUserProvider>
+                </ApiErrorBoundary>
             </main>
 
-            <main className="relative mt-8 sm:mt-10 w-full ">
-                <div className="w-full bg-white/10 backdrop-blur-xl border-y border-white/20 py-4 sm:py-6 md:py-8 shadow-2xl">
-                    <div className="px-4 sm:px-6 lg:px-8">
-                        <MatchTags matchModes={["개인전", "데스매치", "폭파미션", "진짜를 모아라"]} selectedMatchMode={selectedMatchMode} setSelectedMatchMode={setSelectedMatchMode} />
+            {/* 매치 정보 */}
+            <section className="max-w-4xl mx-auto px-4 pb-8">
+                <div className="rounded-xl bg-[#1e1e38] border border-[#2a2a4a] overflow-hidden">
+                    {/* 매치 모드 탭 */}
+                    <div className="border-b border-[#2a2a4a] p-3">
+                        <MatchTags
+                            matchModes={MATCH_MODES}
+                            selectedMatchMode={selectedMatchMode}
+                            setSelectedMatchMode={(mode) => {
+                                setSelectedMatchMode(mode);
+                                setSelectedMatchType("전체");
+                            }}
+                        />
+                        {/* 폭파미션일 때 match_type 선택 */}
+                        {showMatchType && (
+                            <div className="flex gap-1.5 flex-wrap mt-2">
+                                {MATCH_TYPES.map((type) => (
+                                    <button
+                                        key={type}
+                                        className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
+                                            selectedMatchType === type
+                                                ? "bg-orange-500 text-white"
+                                                : "bg-[#2a2a4a] text-slate-400 hover:text-white"
+                                        }`}
+                                        onClick={() => setSelectedMatchType(type)}
+                                    >
+                                        {type}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {/* 매치 리스트 */}
+                    <div className="p-3">
                         <ApiErrorBoundary>
-                            <SAMatchProvider matchMode={selectedMatchMode}>
+                            <SAMatchProvider
+                                matchMode={selectedMatchMode}
+                                matchType={showMatchType && selectedMatchType !== "전체" ? selectedMatchType : undefined}
+                            >
                                 <MatchContainer />
                             </SAMatchProvider>
                         </ApiErrorBoundary>
                     </div>
                 </div>
-            </main>
+            </section>
         </div>
     )
 }
